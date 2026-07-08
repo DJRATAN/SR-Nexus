@@ -43,7 +43,7 @@ function LinksDashboard() {
         <main className="apple-main-content w-full max-w-6xl mx-auto px-4 sm:px-8 py-8">
           <header className="text-center mb-12 mt-4">
             <h1 className="text-4xl font-extrabold mb-3 tracking-tight text-white drop-shadow-sm">
-              My Digital Space
+              SR Nexus
             </h1>
             <p className="text-white/60 text-lg max-w-xl mx-auto font-medium">
               Your favorite links, exactly where you need them.

@@ -46,7 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="grid h-8 w-8 place-items-center rounded-lg" style={{ background: "var(--gradient-primary)" }}>
               <Mail className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold tracking-tight text-foreground hidden sm:inline-block">EmailCardFlow</span>
+            <span className="font-semibold tracking-tight text-foreground hidden sm:inline-block">SR Nexus</span>
           </Link>
 
           {/* Inline PC Toggle */}

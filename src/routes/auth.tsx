@@ -11,7 +11,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Sign in — EmailCardFlow" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Sign in — SR Nexus" }, { name: "robots", content: "noindex" }] }),
   component: AuthPage,
 });
 
@@ -65,13 +65,13 @@ function AuthPage() {
           <div className="grid h-9 w-9 place-items-center rounded-lg bg-white/15 backdrop-blur">
             <Mail className="h-5 w-5" />
           </div>
-          <span className="text-lg font-semibold">EmailCardFlow</span>
+          <span className="text-lg font-semibold">SR Nexus</span>
         </Link>
         <div className="space-y-4">
           <h2 className="text-3xl font-bold leading-tight">The split-view workspace for email metadata.</h2>
           <p className="text-primary-foreground/80">Browse emails on the left. Interact with rich cards on the right. Admin the whole thing in one place.</p>
         </div>
-        <p className="text-xs text-primary-foreground/70">© {new Date().getFullYear()} EmailCardFlow</p>
+        <p className="text-xs text-primary-foreground/70">© {new Date().getFullYear()} SR Nexus</p>
       </div>
 
       <div className="flex items-center justify-center p-6">
@@ -81,7 +81,7 @@ function AuthPage() {
               <div className="grid h-9 w-9 place-items-center rounded-lg" style={{ background: "var(--gradient-primary)" }}>
                 <Mail className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-lg font-semibold">EmailCardFlow</span>
+              <span className="text-lg font-semibold">SR Nexus</span>
             </Link>
           </div>
 

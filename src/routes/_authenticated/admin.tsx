@@ -17,7 +17,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import * as XLSX from "xlsx";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Admin — EmailCardFlow" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — SR Nexus" }, { name: "robots", content: "noindex" }] }),
   component: AdminPage,
 });
 
@@ -248,7 +248,7 @@ function EmailsAdmin() {
           <div className="space-y-4">
             <div>
               <Label>Title</Label>
-              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} placeholder="e.g. Welcome to EmailCardFlow" />
+              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} placeholder="e.g. Welcome to SR Nexus" />
             </div>
             <div>
               <Label>Email</Label>
