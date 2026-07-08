@@ -43,8 +43,8 @@ function LinksDashboard() {
     if (searchQuery.trim() !== "") {
       const q = searchQuery.toLowerCase();
       filtered = filtered.filter(l => 
-        l.title.toLowerCase().includes(q) || 
-        l.url.toLowerCase().includes(q)
+        (l.title || "").toLowerCase().includes(q) || 
+        (l.url || "").toLowerCase().includes(q)
       );
     }
     return filtered;
