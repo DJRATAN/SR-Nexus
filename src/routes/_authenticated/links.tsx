@@ -4,8 +4,9 @@ import type { Link as LinkType, Category } from "@/lib/linkflow-storage";
 import { getLinks, getCategories } from "@/lib/linkflow-storage";
 import { LinkCard } from "@/components/linkflow/LinkCard";
 import { DynamicIcon } from "@/components/linkflow/DynamicIcon";
+import { RandomQuote } from "@/components/linkflow/RandomQuote";
 import { cn } from "@/lib/utils";
-import { Link2Off } from "lucide-react";
+import { Link2Off, Search } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/links")({
@@ -16,6 +17,7 @@ function LinksDashboard() {
   const [links, setLinks] = useState<LinkType[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeCategoryId, setActiveCategoryId] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -33,9 +35,33 @@ function LinksDashboard() {
 
   if (!isMounted) return <div className="text-white p-8">Loading...</div>;
 
-  const categoriesToRender = activeCategoryId === "all" 
-    ? categories 
-    : categories.filter(c => c.id === activeCategoryId);
+  const filteredLinks = useMemo(() => {
+    let filtered = links;
+    if (activeCategoryId !== "all") {
+      filtered = filtered.filter(l => l.categoryId === activeCategoryId);
+    }
+    if (searchQuery.trim() !== "") {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(l => 
+        l.title.toLowerCase().includes(q) || 
+        l.url.toLowerCase().includes(q)
+      );
+    }
+    return filtered;
+  }, [links, activeCategoryId, searchQuery]);
+
+  const categoriesToRender = useMemo(() => {
+    let cats = categories;
+    if (activeCategoryId !== "all") {
+      cats = cats.filter(c => c.id === activeCategoryId);
+    }
+    if (searchQuery.trim() !== "") {
+      // Only keep categories that have matching links
+      const activeCatIds = new Set(filteredLinks.map(l => l.categoryId));
+      cats = cats.filter(c => activeCatIds.has(c.id));
+    }
+    return cats;
+  }, [categories, activeCategoryId, searchQuery, filteredLinks]);
 
   return (
     <div className="apple-glass-theme">
@@ -49,6 +75,19 @@ function LinksDashboard() {
               Your favorite links, exactly where you need them.
             </p>
           </header>
+
+          <RandomQuote />
+
+          <div className="mb-6 relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
+            <input
+              type="text"
+              placeholder="Search links by name or URL..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 focus:border-[var(--accent)] transition-all shadow-sm"
+            />
+          </div>
 
       <div className="flex gap-2 overflow-x-auto pb-4 mb-8 max-w-full" style={{ scrollbarWidth: 'none' }}>
         <button
@@ -81,7 +120,7 @@ function LinksDashboard() {
 
       <div className="space-y-12">
         {categoriesToRender.map(category => {
-          const categoryLinks = links.filter(link => link.categoryId === category.id);
+          const categoryLinks = filteredLinks.filter(link => link.categoryId === category.id);
           if (categoryLinks.length === 0) return null;
 
           return (
