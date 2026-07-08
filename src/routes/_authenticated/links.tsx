@@ -33,8 +33,6 @@ function LinksDashboard() {
     fetchData();
   }, []);
 
-  if (!isMounted) return <div className="text-white p-8">Loading...</div>;
-
   const filteredLinks = useMemo(() => {
     let filtered = links;
     if (activeCategoryId !== "all") {
@@ -62,6 +60,8 @@ function LinksDashboard() {
     }
     return cats;
   }, [categories, activeCategoryId, searchQuery, filteredLinks]);
+
+  if (!isMounted) return <div className="text-white p-8">Loading...</div>;
 
   return (
     <div className="apple-glass-theme">
