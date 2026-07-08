@@ -135,6 +135,24 @@ function Dashboard() {
 
   const selected = filtered.find((e) => e.id === selectedId) ?? filtered[0];
 
+  const displayedCards = useMemo(() => {
+    const list = cardsQ.data ?? [];
+    if (!query.trim()) return list;
+    
+    const q = query.toLowerCase();
+    
+    const emailMatches = selected?.subject.toLowerCase().includes(q) || (selected?.recipient ?? "").toLowerCase().includes(q);
+    
+    const matchingCards = list.filter(c => 
+       c.title.toLowerCase().includes(q) || 
+       (c.subtitle ?? "").toLowerCase().includes(q)
+    );
+    
+    if (matchingCards.length > 0) return matchingCards;
+    
+    return emailMatches ? list : [];
+  }, [cardsQ.data, query, selected]);
+
   // Initial enter animation for cards
   useEffect(() => {
     if (detailsRef.current && !cardsQ.isLoading && (cardsQ.data?.length ?? 0) > 0) {
@@ -244,10 +262,10 @@ function Dashboard() {
                   <div style={{ color: 'rgba(255,255,255,0.4)' }}>Loading cards...</div>
                 ) : (
                   <div className="apple-projects-grid">
-                    {(cardsQ.data ?? []).map((card) => (
+                    {displayedCards.map((card) => (
                       <ProjectCard key={card.id} card={card} />
                     ))}
-                    {(cardsQ.data ?? []).length === 0 && (
+                    {displayedCards.length === 0 && (
                        <div style={{ color: 'rgba(255,255,255,0.4)', gridColumn: '1 / -1', padding: '40px 0' }}>No projects found for this account.</div>
                     )}
                   </div>

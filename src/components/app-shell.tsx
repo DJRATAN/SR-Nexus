@@ -32,11 +32,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     navigate({ to: "/auth", replace: true });
   };
 
-  // Determine what the alternative view is.
   const isDashboard = pathname.startsWith("/dashboard");
-  const alternativeNav = isDashboard && isAdmin 
-    ? { to: "/admin", label: "Admin", icon: Shield }
-    : { to: "/dashboard", label: "Dashboard", icon: LayoutGrid };
+  const isLinks = pathname.startsWith("/links");
 
   // Determine Initials for Avatar
   const initials = user?.email?.substring(0, 2).toUpperCase() || "US";
@@ -79,15 +76,27 @@ export function AppShell({ children }: { children: ReactNode }) {
 
           <div className="flex items-center gap-2 sm:gap-4">
             <nav className="flex items-center gap-1 sm:gap-2">
-              {/* Show alternative link if user is Admin or if they are on Admin (Admin implies they can go to Dashboard) */}
-              {(isAdmin || !isDashboard) && (
+              <Link
+                to="/dashboard"
+                className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors", pathname === "/dashboard" ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground")}
+              >
+                <LayoutGrid className="h-4 w-4" />
+                <span className="hidden sm:inline-block">Emails</span>
+              </Link>
+              <Link
+                to="/links"
+                className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors", pathname === "/links" ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground")}
+              >
+                <LayoutGrid className="h-4 w-4" />
+                <span className="hidden sm:inline-block">Links</span>
+              </Link>
+              {isAdmin && (
                 <Link
-                  to={alternativeNav.to}
-                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors text-muted-foreground hover:bg-muted hover:text-foreground"
-                  title={alternativeNav.label}
+                  to={isLinks ? "/links-admin" : "/admin"}
+                  className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors", (pathname === "/admin" || pathname === "/links-admin") ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground")}
                 >
-                  <alternativeNav.icon className="h-4 w-4" />
-                  <span className="hidden sm:inline-block">{alternativeNav.label}</span>
+                  <Shield className="h-4 w-4" />
+                  <span className="hidden sm:inline-block">Admin</span>
                 </Link>
               )}
             </nav>
