@@ -33,27 +33,29 @@ function LinksDashboard() {
 
   if (!isMounted) return <div className="text-white p-8">Loading...</div>;
 
-  const filteredLinks = activeCategoryId === "all"
-    ? links
-    : links.filter(l => l.categoryId === activeCategoryId);
+  const categoriesToRender = activeCategoryId === "all" 
+    ? categories 
+    : categories.filter(c => c.id === activeCategoryId);
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <header className="text-center mb-12 mt-4">
-        <h1 className="text-4xl font-extrabold mb-3 tracking-tight text-white drop-shadow-sm">
-          My Digital Space
-        </h1>
-        <p className="text-slate-400 text-lg max-w-xl mx-auto">
-          Your favorite links, exactly where you need them.
-        </p>
-      </header>
+    <div className="apple-glass-theme">
+      <div className="apple-app-container" style={{ minHeight: 'calc(100vh - 64px)' }}>
+        <main className="apple-main-content w-full max-w-6xl mx-auto px-4 sm:px-8 py-8">
+          <header className="text-center mb-12 mt-4">
+            <h1 className="text-4xl font-extrabold mb-3 tracking-tight text-white drop-shadow-sm">
+              My Digital Space
+            </h1>
+            <p className="text-white/60 text-lg max-w-xl mx-auto font-medium">
+              Your favorite links, exactly where you need them.
+            </p>
+          </header>
 
       <div className="flex gap-2 overflow-x-auto pb-4 mb-8 max-w-full" style={{ scrollbarWidth: 'none' }}>
         <button
           onClick={() => setActiveCategoryId("all")}
           className={cn(
-            "px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium transition-all duration-200 whitespace-nowrap",
-            activeCategoryId === "all" ? "bg-indigo-500 text-white border-indigo-500 shadow-lg shadow-indigo-500/20" : "text-slate-400 hover:text-white hover:bg-white/10"
+            "px-4 py-2 rounded-full border text-sm font-medium transition-all duration-300 whitespace-nowrap shadow-sm hover:-translate-y-0.5",
+            activeCategoryId === "all" ? "bg-[var(--accent)] text-white border-transparent shadow-[var(--accent-glow)]" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/10"
           )}
         >
           All
@@ -63,8 +65,8 @@ function LinksDashboard() {
             key={cat.id}
             onClick={() => setActiveCategoryId(cat.id)}
             className={cn(
-              "px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap",
-              activeCategoryId === cat.id ? "bg-indigo-500 text-white border-indigo-500 shadow-lg shadow-indigo-500/20" : "text-slate-400 hover:text-white hover:bg-white/10"
+              "px-4 py-2 rounded-full border text-sm font-medium transition-all duration-300 flex items-center gap-2 whitespace-nowrap shadow-sm hover:-translate-y-0.5",
+              activeCategoryId === cat.id ? "bg-[var(--accent)] text-white border-transparent shadow-[var(--accent-glow)]" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/10"
             )}
           >
             {cat.customIcon ? (
@@ -77,25 +79,49 @@ function LinksDashboard() {
         ))}
       </div>
 
-      {filteredLinks.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredLinks.map(link => (
-            <LinkCard 
-              key={link.id} 
-              link={link} 
-              category={categories.find(c => c.id === link.categoryId)} 
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-20 text-slate-400 flex flex-col items-center justify-center">
-          <Link2Off className="w-16 h-16 mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold mb-2 text-slate-300">No links found</h3>
-          <p className="text-slate-400">
-            Start by adding some links in the <Link to="/admin" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30">admin panel</Link>.
+      <div className="space-y-12">
+        {categoriesToRender.map(category => {
+          const categoryLinks = links.filter(link => link.categoryId === category.id);
+          if (categoryLinks.length === 0) return null;
+
+          return (
+            <section key={category.id} className="animate-in fade-in duration-500 apple-details-card" style={{ padding: '24px' }}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 flex items-center justify-center rounded-xl shrink-0" style={{ background: 'rgba(139, 92, 246, 0.1)', color: 'var(--accent)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+                  {category.customIcon ? (
+                      <img src={category.customIcon} className="w-5 h-5 object-contain rounded" />
+                  ) : (
+                      <DynamicIcon name={category.icon || "folder"} className="w-5 h-5" />
+                  )}
+                </div>
+                <h2 className="text-2xl font-bold tracking-tight text-white">{category.name}</h2>
+              </div>
+              
+              <div className="flex flex-wrap gap-4">
+                {categoryLinks.map(link => (
+                  <LinkCard 
+                    key={link.id} 
+                    link={link} 
+                    category={category} 
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+
+      {links.length === 0 && (
+        <div className="text-center py-20 text-white/50 flex flex-col items-center justify-center apple-details-card" style={{ padding: '40px' }}>
+          <Link2Off className="w-16 h-16 mb-4 opacity-40" />
+          <h3 className="text-xl font-semibold mb-2 text-white/80">No links found</h3>
+          <p className="text-white/60">
+            Start by adding some links in the <Link to="/links-admin" className="text-[var(--accent)] hover:text-white underline underline-offset-4 decoration-[var(--accent)]/30 transition-colors">admin panel</Link>.
           </p>
         </div>
       )}
+        </main>
+      </div>
     </div>
   );
 }
