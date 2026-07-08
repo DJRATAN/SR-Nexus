@@ -104,6 +104,8 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+import { PcProvider } from "@/contexts/PcContext";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
@@ -119,8 +121,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
-      <Toaster />
+      <PcProvider>
+        <Outlet />
+        <Toaster />
+      </PcProvider>
     </QueryClientProvider>
   );
 }

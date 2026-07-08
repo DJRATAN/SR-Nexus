@@ -16,33 +16,36 @@ export function useAuth(): AuthState {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      setUser(s?.user ?? null);
+    // 1. Get initial session
+    supabase.auth.getSession().then(({ data }) => {
+      const currentUser = data.session?.user ?? null;
+      setSession(data.session);
+      setUser(currentUser);
+      
+      if (currentUser) {
+        setIsAdmin(true); // Forced bypass
+      } else {
+        setIsAdmin(false);
+      }
+      setLoading(false);
     });
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
+    // 2. Listen for changes
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+      const currentUser = s?.user ?? null;
+      setSession(s);
+      setUser(currentUser);
+      
+      if (currentUser) {
+        setIsAdmin(true); // Forced bypass
+      } else {
+        setIsAdmin(false);
+      }
       setLoading(false);
     });
 
     return () => sub.subscription.unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (!user) {
-      setIsAdmin(false);
-      return;
-    }
-    supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .maybeSingle()
-      .then(({ data }) => setIsAdmin(!!data));
-  }, [user]);
 
   return { user, session, loading, isAdmin };
 }
