@@ -38,24 +38,25 @@ export function RandomQuote() {
   if (quotes.length === 0) return null;
 
   return (
-    <div className="apple-project-card p-6 md:p-8 mb-12 flex flex-col md:flex-row gap-6 items-center justify-between" style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)', borderRadius: '24px' }}>
-      <div className="flex gap-4 items-start flex-1 min-w-0">
-        <div className="mt-1 w-10 h-10 shrink-0 flex items-center justify-center rounded-xl bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
-          <Quote size={20} />
-        </div>
-        <div ref={quoteRef} className="flex-1 min-w-0">
-          <h2 className="text-xl md:text-2xl font-medium text-white/90 leading-snug tracking-tight">
-            "{quotes[quoteIndex]}"
-          </h2>
-        </div>
+    <div className="apple-project-card p-6 md:p-10 mb-12 flex flex-col gap-6 items-center justify-center text-center relative overflow-hidden" style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)', borderRadius: '24px' }}>
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-50 pointer-events-none" />
+      
+      <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 shadow-[0_0_20px_rgba(139,92,246,0.15)] mb-2 relative z-10">
+        <Quote size={24} className="opacity-90" />
+      </div>
+      
+      <div ref={quoteRef} className="max-w-3xl relative z-10 min-h-[80px] flex items-center justify-center">
+        <h2 className="text-xl md:text-3xl font-medium text-white/90 leading-relaxed tracking-tight italic">
+          "{quotes[quoteIndex]}"
+        </h2>
       </div>
       
       <button 
         onClick={handleNext}
-        className="shrink-0 flex items-center gap-2 px-5 py-3 rounded-full bg-white/5 border border-white/10 text-white/90 font-medium hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+        className="mt-2 relative z-10 flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm font-medium hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
       >
-        <span>Next</span>
-        <ArrowRight size={18} />
+        <span>Next Quote</span>
+        <ArrowRight size={16} />
       </button>
     </div>
   );
