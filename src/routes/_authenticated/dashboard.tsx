@@ -9,7 +9,7 @@ import { usePc } from "@/contexts/PcContext";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — SR Nexus" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Ryze" }] }),
   component: Dashboard,
 });
 

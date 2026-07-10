@@ -73,10 +73,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SR Nexus — Email Metadata Made Visual" },
+      { title: "Ryze — Email Metadata Made Visual" },
       { name: "description", content: "Split-view email metadata management with dynamic cards, admin controls, and real-time interaction." },
-      { name: "author", content: "SR Nexus" },
-      { property: "og:title", content: "SR Nexus" },
+      { name: "author", content: "Ryze" },
+      { property: "og:title", content: "Ryze" },
       { property: "og:description", content: "Split-view email metadata management with dynamic cards and admin controls." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

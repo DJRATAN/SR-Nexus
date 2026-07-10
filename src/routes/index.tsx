@@ -18,7 +18,7 @@ function Landing() {
           <div className="grid h-9 w-9 place-items-center rounded-lg" style={{ background: "var(--gradient-primary)" }}>
             <Mail className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-lg font-semibold tracking-tight">SR Nexus</span>
+          <span className="text-lg font-semibold tracking-tight">Ryze</span>
         </div>
         <Link to="/auth">
           <Button variant="outline">Sign in</Button>
